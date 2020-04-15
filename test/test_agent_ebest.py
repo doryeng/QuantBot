@@ -13,7 +13,7 @@ class TestEBest(unittest.TestCase):
 
     def tearDown(self):
         self.ebest.logout()
-
+    """
     def test_get_code_list(self):
         print(inspect.stack()[0][3])
         all_result = self.ebest.get_code_list("ALL")
@@ -33,4 +33,21 @@ class TestEBest(unittest.TestCase):
         print(inspect.stack()[0][3])
         result = self.ebest.get_stock_price_by_code("005930","2")
         assert result is not None
+        print(result)
+
+    def test_agent_account_info(self):
+        result = self.ebest.get_account_info()
+        assert result is not None
+        print(result)
+
+    def test_agent_account_stock_info(self):
+        result = self.ebest.get_accout_stock_info()
+        assert result is not None
+        print(result)
+    """
+
+    def test_order_stock(self):
+        print(inspect.stack() [0][3])
+        result = self.ebest.order_stock("005930", "1", "1", "2", "81")
+        assert result
         print(result)
