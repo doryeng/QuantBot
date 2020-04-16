@@ -155,7 +155,6 @@ class EBest:
         result = self._execute_query("CSPAQ12300", "CSPAQ12300InBlock1", "CSPAQ12300OutBlock3", *out_params, **in_params)
         return result
 
-    # 테스트 해야함
     def order_stock(self, code, qty, price, bns_type, order_type):
         # TR: CSPAT00600 현물 정상 주문
         # :param btn_type:str 매매타입, 1:매도, 2:매수
@@ -177,16 +176,14 @@ class EBest:
         # :return result:dict 취소 결과
         in_params = {"OrgOrdNo": order_no, "AcntNo": self.account, "InptPwd": self.passwd, "IsuNo": code, "OrdQty":qty}
         out_params = ["OrdNo", "PrntOrdNo", "OrdTime", "OrdPtnCode", "IsuNm"]
-        result = slef._execute_query("CSPAT00800", "CSPAT00800InBlock1", "CSPAT00800OutBlock2", *out_params, **in_params)
+        result = self._execute_query("CSPAT00800", "CSPAT00800InBlock1", "CSPAT00800OutBlock2", *out_params, **in_params)
         return result
 
-    # 테스트 해야함
     def order_check(self, order_no):
         # TR: t0425 주식 체결/미체결
-        # :param code:str 종목코드
         # :param order_no:str 주문번호
         # :return result:dict 주문번호의 체결상태
-        in_params = {"accno": self.account, "passwd": self.passwd, "expcode": code,
+        in_params = {"accno": self.account, "passwd": self.passwd, "expcode": "",
         "chegb": "0", "medosu": "0", "sortgb": "1", "cts_ordno": " "}
         out_params =["ordno", "expcode", "medosu", "qty", "price", "cheqty", "cheprice", "ordrem",
         "cfmqty", "status", "orgordno", "ordgb", "ordermtd", "sysprocseq", "hogagb", "price1", "orggb", "singb", "loandt"]
