@@ -50,7 +50,7 @@ class MongoDBHandler:
             raise Exception("Need to param db_name, collection_name")
         return self._client[db_name][collection_name].insert_many(datas).inserted_ids
 
-    def find_items(self, condition=None, db_name=None, collection_name=None):
+    def find_item(self, condition=None, db_name=None, collection_name=None):
         """
         MongoDB의 find()를 실행하는 함수입니다.
 
@@ -66,7 +66,7 @@ class MongoDBHandler:
             raise Exception("Need to param db_name, collection_name")
         return self._client[db_name][collection_name].find(condition, {"_id": False}, no_cursor_timeout=True, cursor_type=CursorType.EXHAUST)
 
-    def find_item(self, condition=None, db_name=None, collection_name=None):
+    def find_item_one(self, condition=None, db_name=None, collection_name=None):
         """
         MongoDB의 findOne()을 실행하는 함수입니다.
 
@@ -82,7 +82,7 @@ class MongoDBHandler:
             raise Exception("Need to param db_name, collection_name")
         return self._client[db_name][collection_name].find_one(condition, {"_id": False})
 
-    def delete_items(self, condition=None, db_name=None, collection_name=None):
+    def delete_item_many(self, condition=None, db_name=None, collection_name=None):
         """
         MongoDB의 deleteMany()를 실행하는 함수입니다.
 
@@ -99,7 +99,7 @@ class MongoDBHandler:
             raise Exception("Need to param db_name, collection_name")
         return self._client[db_name][collection_name].delete_many(condition)
 
-    def update_items(self, condition=None, update_value=None, db_name=None, collection_name=None):
+    def update_item_many(self, condition=None, update_value=None, db_name=None, collection_name=None):
         """
         MongoDB의 updateMany()를 실행하는 함수입니다.
 
@@ -120,7 +120,7 @@ class MongoDBHandler:
             raise Exception("Need to param db_name, collection_name")
         return self._client[db_name][collection_name].update_many(filter=condition, update=update_value)
 
-    def update_item(self, condition=None, update_value=None, db_name=None, collection_name=None):
+    def update_item_one(self, condition=None, update_value=None, db_name=None, collection_name=None):
         """
         MongoDB의 updateOne()을 실행하는 함수입니다.
 

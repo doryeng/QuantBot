@@ -17,7 +17,7 @@ def run_process_trading_scenario(code_list):
 
 def check_buy_completed_order(code):
     # 매수 완료된 주문은 매도 주문
-#    buy_completed_order_list = list(mongo.find_items({"$and":[{"code": code}, {"status": "buy_completed"}]}, "stocklab_demo", "order"))
+    buy_completed_order_list = list(mongo.find_items({"$and":[{"code": code}, {"status": "buy_completed"}]}, "stocklab_demo", "order"))
 
     # 매도 주문
     for buy_completed_order in buy_completed_order_list:

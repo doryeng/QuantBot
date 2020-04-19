@@ -46,30 +46,40 @@ class TestEBest(unittest.TestCase):
         assert result is not None
         print(result)
 
+
     def test_order_stock(self):
         print(inspect.stack() [0][3])
-        result = self.ebest.order_stock("005930", "2", "50000", "2", "00")
+        result = self.ebest.order_stock("005930", "2", "48000", "2", "00")
         assert result
         print(result)
 
     def test_order_cancel(self):
         print(inspect.stack()[0][3])
-        result = self.ebest.order_cancel("12485", "A005930", "1")
+        result = self.ebest.order_cancel("32957", "A005930", "1")
         assert result
         print(result)
 
-    """
     def test_order_check(self):
         print(inspect.stack()[0][3])
-        result = self.ebest.order_check("12485")
+        result = self.ebest.order_check("32957")
         assert result
         print(result)
 
-    """
     def test_get_current_call_price_by_code(self):
         print(inspect.stack()[0][3])
         result = self.ebest.get_current_call_price_by_code("005930")
         assert result
         print(result)
 
+    def test_get_price_n_min_by_code(self):
+        print(inspect.stack()[0][3])
+        result = self.ebest.get_price_n_min_by_code("20190412", "180640")
+        assert result
+        print(result)
     """
+    def test_get_price_n_min_by_code_tick(self):
+        print(inspect.stack()[0][3])
+        result = self.ebest.get_price_n_min_by_code("20200412", "005930", 0)
+        assert result
+        print(result)
+    
