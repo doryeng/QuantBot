@@ -1,3 +1,9 @@
 /test/__pycache__
 /stocklab/agent/__pycache__
 /conf/config.ini
+/stocklab/db_handler/mongodb.py
+/stocklab/db_handler/__pycache__
+/stocklab/scheduler/__pycache__
+/stocklab/scheduler/trading_5m.py
+/.idea
+/__pycache__

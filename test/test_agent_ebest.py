@@ -77,9 +77,12 @@ class TestEBest(unittest.TestCase):
         assert result
         print(result)
     """
+    """
+    
+    
     def test_get_price_n_min_by_code_tick(self):
         print(inspect.stack()[0][3])
         result = self.ebest.get_price_n_min_by_code("20200412", "005930", 0)
         assert result
         print(result)
-    
+    """

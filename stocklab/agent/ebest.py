@@ -20,7 +20,7 @@ class XASession:
     def OnDisconnect(self):
         # 서버와의 연결이 끊어지면 발생하는 이벤트
         print("Session disconnected")
-        XA_Session.login_state = 0
+        XASession.login_state = 0
 
 class EBest:
 

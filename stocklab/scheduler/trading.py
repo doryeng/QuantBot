@@ -2,12 +2,12 @@ import time
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 from stocklab.agent.ebest import EBest
-#from stocklab.db_handler.mongodb_handler import MongoDBHandler
+from stocklab.db_handler.mongodb_handler import MongoDBHandler
 from multiprocessing import Process
 
 ebest_demo = EBest("DEMO")
 ebest_demo.login()
-#mongo = MongoDBHandler()
+mongo = MongoDBHandler()
 
 def run_process_trading_scenario(code_list):
     p = Process(target=trading_scenario, args=(code_list,))
@@ -91,6 +91,3 @@ if __name__ == "__main__":
     while True:
         print("waiting...", datetime.now())
         time.sleep(1)
-
-# 해야하는 공부순서 : mongoDB -> order_stock,cancel,check 코드 확인 -> 트레이드 알고리즘
-# 오늘 mongoDB 하면 되게땅
