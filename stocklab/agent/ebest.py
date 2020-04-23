@@ -9,8 +9,10 @@ class XASession:
     login_state = 0
 
     def OnLogin(self, code, msg):
-        # 로그인 시도 후 호출되는 이벤트
-        # code가 0000이면 로그인 성공
+        """
+        로그인 시도 후 호출되는 이벤트
+        code가 0000이면 로그인 성공
+        """
         if code=="0000":
             print(code, msg)
             XASession.login_state = 1
@@ -18,7 +20,9 @@ class XASession:
             print(code, msg)
 
     def OnDisconnect(self):
-        # 서버와의 연결이 끊어지면 발생하는 이벤트
+        """
+        서버와의 연결이 끊어지면 발생하는 이벤트
+        """
         print("Session disconnected")
         XASession.login_state = 0
 
@@ -28,10 +32,12 @@ class EBest:
     LIMIT_SECONDS = 600 #10minute
 
     def __init__(self, mode=None):
-        # config.ini 파일을 로드해 사용자ㅡ 서버 정보 저장
-        # query_cnt는 10분당 200개의 TR 수행을 관리하기 위한 리스트
-        # xa_session_client는 XASession 객체
-        # :param mode:str - 모의서버는 demo, 실서버는 prod로 구분
+        """
+        config.ini 파일을 로드해 사용자ㅡ 서버 정보 저장
+        query_cnt는 10분당 200개의 TR 수행을 관리하기 위한 리스트
+        xa_session_client는 XASession 객체
+        :param mode:str - 모의서버는 demo, 실서버는 prod로 구분
+        """
         if mode not in ["PROD","DEMO", "ACE"]:
             raise Exception("Need to run_mode(PROD or DEMO or ACE)")
 
@@ -49,13 +55,15 @@ class EBest:
         self.query_cnt = []
 
     def _execute_query(self, res, in_block_name, out_block_name, *out_fields, **set_fields):
-        # TR코드를 실행하기 위한 메서드입니다.
-        # :param res:str 리소스 이름(TR)
-        # :param in_block_name:str 인 블록 이름
-        # :param out_block_name:str 아웃 블록 이름
-        # :param out_params:list 출력 필드 리스트
-        # :param in_params:dick 인 블록에 설정할 필드 딕셔너리
-        # :param result: list 결과를 list에 담아 반환
+        """
+        TR코드를 실행하기 위한 메서드입니다.
+        :param res:str 리소스 이름(TR)
+        :param in_block_name:str 인 블록 이름
+        :param out_block_name:str 아웃 블록 이름
+        :param out_params:list 출력 필드 리스트
+        :param in_params:dick 인 블록에 설정할 필드 딕셔너리
+        :param result: list 결과를 list에 담아 반환
+        """
         time.sleep(1)
         print("current query cnt:", len(self.query_cnt))
         print(res, in_block_name, out_block_name)
@@ -107,9 +115,11 @@ class EBest:
         return result
 
     def get_code_list(self, market=None):
-        # TR: t8436 코스피, 코스닥의 종목 리스트를 가져온다.
-        # :param market:str 전체(0), 코스피(1), 코스닥(2)
-        # :return result:list 시장별 종목 리스트
+        """
+        TR: t8436 코스피, 코스닥의 종목 리스트를 가져온다.
+        :param market:str 전체(0), 코스피(1), 코스닥(2)
+        :return result:list 시장별 종목 리스트
+        """
         if market !="ALL" and market !="KOSPI" and market!="KOSDAQ":
             raise Exception("Need to market param(ALL, KOSPI, kOSDAQ)")
 
@@ -121,10 +131,12 @@ class EBest:
         return result
 
     def get_stock_price_by_code(self, code=None, cnt="1"):
-        # TR: t1305  현재 날짜를 기준으로 cnt 만큼 전일의 데이터를 가져온다.
-        # :param code:str 종목코드
-        # :param cnt:str 이전 데이터 조회 범위(일단위)
-        # :param result:list 종목의 최근 가격 정보
+        """
+        TR: t1305  현재 날짜를 기준으로 cnt 만큼 전일의 데이터를 가져온다.
+        :param code:str 종목코드
+        :param cnt:str 이전 데이터 조회 범위(일단위)
+        :param result:list 종목의 최근 가격 정보
+        """
         in_params = {"shcode":code, "dwmcode":"1", "date":"", "idx":"", "cnt":cnt}
         out_params =['date', 'open', 'high', 'low', 'close', 'sign',
                     'change', 'diff', 'volume', 'diff_vol', 'chdegree',
@@ -139,16 +151,20 @@ class EBest:
         return result
 
     def get_account_info(self):
-        # TR: CSPAQ12200 현물계좌 예수금/주문가능금액/총평가
-        # :return result:list Field CSPAQ12200 참고
+        """
+        TR: CSPAQ12200 현물계좌 예수금/주문가능금액/총평가
+        :return result:list Field CSPAQ12200 참고
+        """
         in_params = {"RecCnt":1, "AcntNo": self.account, "Pwd": self.passwd}
         out_params = ["MnyOrdAbleAmt", "BalEvalAmt", "DpsastTotamt", "InvstOrgAmt", "InvstPlAmt", "Dps"]
         result = self._execute_query("CSPAQ12200", "CSPAQ12200InBlock1", "CSPAQ12200OutBlock2", *out_params, **in_params)
         return result
 
     def get_accout_stock_info(self):
-        # TR: CSPAQ12300 현물계좌 잔고내역 조회
-        # :return result:list 계좌 보유 종목 정보
+        """
+        TR: CSPAQ12300 현물계좌 잔고내역 조회
+        :return result:list 계좌 보유 종목 정보
+        """
         in_params = {"RecCnt":1, "AcntNo": self.account, "Pwd": self.passwd, "BalCreTp": "0",
         "CmsnAppTpCode": "0", "D2balBaseQryTp": "0", "UprcTpCode": "0"}
         out_params = ["IsuNo", "IsuNm", "BalQty", "SellPrc", "BuyPrc", "NowPrc", "AvrUprc", "BalEvalAmt", "PrdayCprc"]
@@ -156,11 +172,13 @@ class EBest:
         return result
 
     def order_stock(self, code, qty, price, bns_type, order_type):
-        # TR: CSPAT00600 현물 정상 주문
-        # :param btn_type:str 매매타입, 1:매도, 2:매수
-        # :param order_type:str 호가유형, 00:지정가, 03: 시장가, 05: 조건부지정가, 07:최우선지정가,
-        # 61:장개시전시간외 종가, 81:시간외종가, 82:시간외단일가
-        # :return result:dict 주문 관련 정보
+        """
+        TR: CSPAT00600 현물 정상 주문
+        :param btn_type:str 매매타입, 1:매도, 2:매수
+        :param order_type:str 호가유형, 00:지정가, 03: 시장가, 05: 조건부지정가, 07:최우선지정가,
+        61:장개시전시간외 종가, 81:시간외종가, 82:시간외단일가
+        :return result:dict 주문 관련 정보
+        """
         in_params = {"AcntNo": self.account, "InptPwd": self.passwd, "IsuNo": code, "OrdQty": qty,
         "OrdPrc": price, "BnsTpCode": bns_type, "OrdprcPtnCode": order_type, "MgntrnCode": "000", "LoanDt": "", "OrdCndiTpCode":"0"}
         out_params = ["OrdNo", "OrdTime", "OrdMktCode", "OrdPtnCode", "ShtnIsuNo", "MgempNo", "OrdAmt", "SpotOrdQty", "IsuNm"]
@@ -168,20 +186,24 @@ class EBest:
         return result
 
     def order_cancel(self, order_no, code, qty):
-        # TR: CSPAT00800 현물 취소 주문
-        # :param order_no:str 주문번호
-        # :param code:str 종목 코드
-        # :param qty:str 취소 수량
-        # :return result:dict 취소 결과
+        """
+        TR: CSPAT00800 현물 취소 주문
+        :param order_no:str 주문번호
+        :param code:str 종목 코드
+        :param qty:str 취소 수량
+        :return result:dict 취소 결과
+        """
         in_params = {"OrgOrdNo": order_no, "AcntNo": self.account, "InptPwd": self.passwd, "IsuNo": code, "OrdQty":qty}
         out_params = ["OrdNo", "PrntOrdNo", "OrdTime", "OrdPtnCode", "IsuNm"]
         result = self._execute_query("CSPAT00800", "CSPAT00800InBlock1", "CSPAT00800OutBlock2", *out_params, **in_params)
         return result
 
     def order_check(self, order_no):
-        # TR: t0425 주식 체결/미체결
-        # :param order_no:str 주문번호
-        # :return result:dict 주문번호의 체결상태
+        """
+        TR: t0425 주식 체결/미체결
+        :param order_no:str 주문번호
+        :return result:dict 주문번호의 체결상태
+        """
         in_params = {"accno": self.account, "passwd": self.passwd, "expcode": "",
         "chegb": "0", "medosu": "0", "sortgb": "1", "cts_ordno": " "}
         out_params =["ordno", "expcode", "medosu", "qty", "price", "cheqty", "cheprice", "ordrem",
@@ -197,8 +219,10 @@ class EBest:
             return result_list
 
     def get_current_call_price_by_code(self, code=None):
-        # TR: t1101 주식 현재가 호가 조회
-        # :param code:str 종목코드
+        """
+        TR: t1101 주식 현재가 호가 조회
+        :param code:str 종목코드
+        """
         tr_code = "t1101"
         in_params = {"shcode": code}
         out_params = ["hname", "price", "sign", "change", "diff", "volume", "jnilclose",
@@ -216,9 +240,11 @@ class EBest:
         return result
 
     def get_tick_size(self, price):
-        # 호가 단위 조회 메서드
-        # :param price:int 가격
-        # :return 호가단위
+        """
+        호가 단위 조회 메서드
+        :param price:int 가격
+        :return 호가단위
+        """
         if price<1000: return 1
         elif price>=1000 and price<5000: return 5
         elif price>=5000 and price<10000: return 10

@@ -50,6 +50,8 @@ if __name__ == '__main__':
     scheduler.add_job(func=run_process_trading_scenario, trigger="date", run_date=datetime.now(), id="test", 
                     kwargs={"code_list":codes, "date":day})
     scheduler.start()
+    ebest_ace.logout()
+    print("EBest LogOut")
     """
     while True:
         print("waiting...", datetime.now())
